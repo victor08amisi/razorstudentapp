@@ -1,0 +1,119 @@
+@page
+@using AcademicManagement
+@using AcademicManagement
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Lab2.Pages.Registration 
+
+@{
+    ViewData["Title"] = "Registration";
+}
+<style>
+    .selectSection{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    form{
+        display: block;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .line{
+    border-bottom: 1px solid gray;
+    width: 100%;
+    }
+    
+    #alert{
+    font-family: arial;
+    font-size: 24px;
+    color:  green;
+    }
+</style>
+<body>
+<div class="text-center">
+    <h1>Registrations</h1>
+    <br/>
+    <div class="line"></div>
+    <br/>
+    <div class="selectSection">
+        <form method="post" asp-page-handler="Register" asp-page="Registration">
+            <select asp-for="studentID">
+                <option value="">Choose a student...</option>
+                @foreach (var student in DataAccess.GetAllStudents())
+                {
+                    <option  value="@student.StudentId">@student.StudentName</option>
+                }
+            </select>
+            <button asp-page-handler="Register" type="submit" class="btn btn-primary">Get Registrations</button>
+        </form>
+    </div>
+    <p id="alert">@Model.alertMessage</p>
+    
+    @* Table section *@
+    
+</div>
+<div id="myDiv">
+    @if (Model.ShowDiv)
+    {
+        @if(Model.isStudentRegistered == false){
+            <form method="post" asp-page-handler="StudentSelected">
+                <input type="hidden" asp-for="studentID" />  <!-- Hidden input for studentID -->
+                <table class="table">
+
+                    <thead>
+                    <tr>
+                        <th scope="col">Course Code</th>
+                        <th scope="col">Course Title</th>
+                        <th scope="col">Check to Register</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach (var course in AcademicManagement.DataAccess.GetAllCourses())
+                    {
+                        <tr>
+                            <td scope="row">@course.CourseCode</td>
+                            <td>@course.CourseTitle</td>
+                            <td>
+                                <input class="form-check-input"
+                                       name="courseSelected"
+                                       type="checkbox"
+                                       value="@course.CourseCode"
+                                       id="flexCheckDefault-@course.CourseCode">
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                <button asp-page-handler="StudentSelected" type="submit" class="btn btn-primary">Register</button>
+            </form>
+        }
+    }
+        
+</div>
+<div id="myDiv2">
+    @if (Model.ShowDiv2)
+    {
+        <table class="table">
+
+            <thead>
+            <tr>
+                <th scope="col">Course Code</th>
+                <th scope="col">Course Title</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var record in DataAccess.GetAcademicRecordsByStudentId(Model.studentID))
+            {
+                <tr>
+                    <td scope="row">@record.CourseCode</td>
+                    <td>@DataAccess.GetAllCourses().FirstOrDefault(c => c.CourseCode == record.CourseCode).CourseTitle</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
+</div>
+</body>

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "mJ2lwj5lT9kDQAC+pNTBQRqjk4DYH6CfLa0/rBpVFoHn2kQs7qqW+b9WriYNDWifzL8AmxzkXf4JR33PlcdOQA==",
+  "success": true,
+  "projectFilePath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/Lab2/Lab2/Lab2.csproj",
+  "expectedPackageFiles": [
+    "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/LocalClassLib/academicmanagement/2.0.0/academicmanagement.2.0.0.nupkg.sha512",
+    "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/LocalClassLib/nlog/5.3.4/nlog.5.3.4.nupkg.sha512"
+  ],
+  "logs": []
+}
