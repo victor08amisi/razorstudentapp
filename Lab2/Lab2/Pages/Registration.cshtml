@@ -2,6 +2,8 @@
 @using AcademicManagement
 @using AcademicManagement
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Session
+@using System.Text.Json
 @model Lab2.Pages.Registration 
 
 @{
@@ -28,6 +30,11 @@
     font-size: 24px;
     color:  green;
     }
+    
+#courseCode, #courseTitle, #courseMark{
+cursor: pointer;
+color:  blue;
+}
 </style>
 <body>
 <div class="text-center">
@@ -36,15 +43,15 @@
     <div class="line"></div>
     <br/>
     <div class="selectSection">
-        <form method="post" asp-page-handler="Register" asp-page="Registration">
-            <select asp-for="studentID">
+        <form method="post" asp-page-handler="Register" asp-page="Registration" id="pickForm">
+            <select id="selectedUser" asp-for="studentID">
                 <option value="">Choose a student...</option>
                 @foreach (var student in DataAccess.GetAllStudents())
                 {
                     <option  value="@student.StudentId">@student.StudentName</option>
                 }
             </select>
-            <button asp-page-handler="Register" type="submit" class="btn btn-primary">Get Registrations</button>
+            <button style="display: none;"  asp-page-handler="Register" type="submit" class="btn btn-primary">Get Registrations</button>
         </form>
     </div>
     <p id="alert">@Model.alertMessage</p>
@@ -63,7 +70,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Course Code</th>
-                        <th scope="col">Course Title</th>
+                        <th scope="col" >Course Title</th>
                         <th scope="col">Check to Register</th>
                     </tr>
                     </thead>
@@ -81,6 +88,7 @@
                                        value="@course.CourseCode"
                                        id="flexCheckDefault-@course.CourseCode">
                             </td>
+                            
                         </tr>
                     }
                     </tbody>
@@ -92,28 +100,149 @@
         
 </div>
 <div id="myDiv2">
+  
     @if (Model.ShowDiv2)
+ 
+    
     {
-        <table class="table">
+        
+        <form asp-page-handler="GradeSubmission" id="gradeForm">
+            <input type="hidden" asp-for="studentID" />
+            @{
+                var userDefinedListJson = HttpContext.Session.GetString($"{Model.studentID}");
+                var userDefinedList = new List<AcademicManagement.AcademicRecord>();
 
-            <thead>
-            <tr>
-                <th scope="col">Course Code</th>
-                <th scope="col">Course Title</th>
-            </tr>
-            </thead>
+                if (!string.IsNullOrEmpty(userDefinedListJson))
+                {
+                    userDefinedList = JsonSerializer.Deserialize<List<AcademicRecord>>(userDefinedListJson);
+                }
+                else
+                {
+                    userDefinedList = null; 
+                }
+     
 
-            <tbody>
-            @foreach (var record in DataAccess.GetAcademicRecordsByStudentId(Model.studentID))
-            {
-                <tr>
-                    <td scope="row">@record.CourseCode</td>
-                    <td>@DataAccess.GetAllCourses().FirstOrDefault(c => c.CourseCode == record.CourseCode).CourseTitle</td>
-                </tr>
             }
-            </tbody>
-        </table>
+            <table class="table">
+
+                <thead>
+                <tr>
+                    <th scope="col"><p id="courseCode">Course Code</p></th>
+                    <th scope="col"><p id="courseTitle">Course Title</p></th>
+                    <th scope="col"><p id="courseMark">Grade</p></th>
+                </tr>
+                </thead>
+
+                <tbody>
+         @if (userDefinedList != null)
+         {
+             @foreach (var record in userDefinedList)
+             {
+                 <tr>
+                     <td scope="row">@record.CourseCode</td>
+                     <td>@DataAccess.GetAllCourses().FirstOrDefault(c => c.CourseCode == record.CourseCode)?.CourseTitle</td>
+                     <td>
+                         <div class="form-group col-md-2">
+                             @if (record.Grade != -100)
+                             {
+                                 <input asp-for="studentGrade" name="@record.CourseCode" value="@record.Grade" type="number" class="form-control" />
+                             }
+                             else
+                             {
+                                 <input asp-for="studentGrade" name="@record.CourseCode" value="0" type="number" class="form-control" />
+                             }
+                         </div>
+                     </td>
+                 </tr>
+             }
+         }
+         else
+         {
+             @foreach (var record in DataAccess.GetAcademicRecordsByStudentId(Model.studentID))
+             {
+                 <tr>
+                     <td scope="row">@record.CourseCode</td>
+                     <td>@DataAccess.GetAllCourses().FirstOrDefault(c => c.CourseCode == record.CourseCode).CourseTitle</td>
+                     <td>
+
+                         <div class="form-group col-md-2">
+                             @if (record.Grade != -100)
+                             {
+                                 <input asp-for="studentGrade" name="@record.CourseCode" value="@record.Grade" type="number" class="form-control">
+                             }
+                             else
+                             {
+                                 <input asp-for="studentGrade" name="@record.CourseCode" value="0" type="number" class="form-control">
+                             }
+
+
+
+                         </div>
+                     </td>
+
+
+
+                 </tr>
+             }
+         }
+                
+                
+                
+                
+                
+                
+                
+               
+                </tbody>
+            </table>
+            <button asp-page-handler="GradeSubmission" type="submit" class="btn btn-primary">Submit Grades</button>
+        </form>
     }
     
 </div>
+<form asp-page-handler="CourseSort" id="CourseSortForm">
+    <input type="hidden" asp-for="studentID"/>
+</form>
+<form asp-page-handler="TitleSort" id="TitleSortForm">
+      <input type="hidden" asp-for="studentID"/>
+</form>
+<form asp-page-handler="GradeSort" id="GradeSortForm">
+      <input type="hidden" asp-for="studentID"/>
+</form>
+
+@section Scripts {
+    <script>
+    
+        // Get the input element
+        let userSelectElement = document.getElementById("selectedUser");
+        let userSelected = "";
+        userSelectElement.addEventListener("change",()=>{
+        userSelected = userSelectElement.value;
+        ///***************
+        let pickUserForm = document.getElementById("pickForm");
+        pickUserForm.submit();
+        
+        })
+     let courseCodeBTN = document.getElementById("courseCode");
+     let courseTitleBTN = document.getElementById("courseTitle");
+     let gradeBTN = document.getElementById("courseMark");
+ 
+     let courseSortForm = document.getElementById("CourseSortForm");
+     let titleSortForm = document.getElementById("TitleSortForm");
+     let gradeSortForm = document.getElementById("GradeSortForm");
+ 
+     courseCodeBTN.addEventListener("click", () => {
+         courseSortForm.submit(); 
+     });
+ 
+     courseTitleBTN.addEventListener("click", () => {
+         titleSortForm.submit(); 
+     });
+ 
+     gradeBTN.addEventListener("click", () => {
+         gradeSortForm.submit(); 
+     });
+    </script>
+
+}
 </body>

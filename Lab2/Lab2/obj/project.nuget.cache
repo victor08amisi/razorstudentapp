@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mJ2lwj5lT9kDQAC+pNTBQRqjk4DYH6CfLa0/rBpVFoHn2kQs7qqW+b9WriYNDWifzL8AmxzkXf4JR33PlcdOQA==",
+  "dgSpecHash": "frGYEjTQ9keIVlm9MgQ3bmfwWMwGWTU53gZEMMCb6HUV3icF8OD0/v6BiABz+7vdV+C/6fdPuSPNfasowK0vtw==",
   "success": true,
-  "projectFilePath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/Lab2/Lab2/Lab2.csproj",
+  "projectFilePath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/assignment 3/razorstudentapp/Lab2/Lab2/Lab2.csproj",
   "expectedPackageFiles": [
     "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/LocalClassLib/academicmanagement/2.0.0/academicmanagement.2.0.0.nupkg.sha512",
     "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/LocalClassLib/nlog/5.3.4/nlog.5.3.4.nupkg.sha512"

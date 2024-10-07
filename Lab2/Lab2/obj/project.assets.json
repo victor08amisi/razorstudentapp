@@ -80,11 +80,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/Lab2/Lab2/Lab2.csproj",
+      "projectUniqueName": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/assignment 3/razorstudentapp/Lab2/Lab2/Lab2.csproj",
       "projectName": "Lab2",
-      "projectPath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/Lab2/Lab2/Lab2.csproj",
+      "projectPath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/assignment 3/razorstudentapp/Lab2/Lab2/Lab2.csproj",
       "packagesPath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/LocalClassLib",
-      "outputPath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/Assignment 2/Lab2/Lab2/obj/",
+      "outputPath": "/Users/victoramisi/Downloads/School work/Fall 2024/Web Prog Lang/assignment 3/razorstudentapp/Lab2/Lab2/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/victoramisi/.nuget/NuGet/NuGet.Config"
